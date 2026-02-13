@@ -31,7 +31,7 @@ class ImportOrderHistoryCommand extends Command
 
     protected function configure(): void
     {
-        $this->setName('xqueue-maileon:import-orders-history')
+        $this->setName('xqueue:maileon:import-orders-history')
             ->setDescription('Imports orders history in batches to Maileon as contact events.')
             ->addOption(
                 'store-view',

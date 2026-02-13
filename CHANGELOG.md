@@ -1,3 +1,6 @@
+# 1.10.6
+- Fixed: CLI commands now registered via plugin to avoid overriding core commands.
+
 # 1.10.5
 - Fixed console command list
 

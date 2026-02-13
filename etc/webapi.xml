@@ -6,7 +6,6 @@
             <resource ref="anonymous"/>
         </resources>
     </route>
-
     <route url="/V1/maileon/webhook-doi-confirm" method="POST">
         <service class="Xqueue\Maileon\Api\MaileonWebhookInterface" method="getDoiConfirmWebhook"/>
         <resources>

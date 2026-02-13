@@ -31,7 +31,7 @@ class ImportNewsletterSubscribersCommand extends Command
 
     protected function configure(): void
     {
-        $this->setName('xqueue-maileon:import-newsletter-subscribers')
+        $this->setName('xqueue:maileon:import-newsletter-subscribers')
             ->setDescription('Imports newsletter subscribers in batches to Maileon.')
             ->addOption(
                 'store-view',

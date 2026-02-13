@@ -1,44 +1,33 @@
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
-
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
     <event name="newsletter_subscriber_save_after">
-        <observer name="xqueue_maileon_subscriber_observer"
-                  instance="Xqueue\Maileon\Observer\NewsletterSubscriberObserver"/>
+        <observer name="xqueue_maileon_subscriber_observer" instance="Xqueue\Maileon\Observer\NewsletterSubscriberObserver"/>
     </event>
     <event name="email_order_set_template_vars_before">
-        <observer name="xqueue_maileon_order_email_observer"
-                  instance="Xqueue\Maileon\Observer\OrderEmailObserver"/>
+        <observer name="xqueue_maileon_order_email_observer" instance="Xqueue\Maileon\Observer\OrderEmailObserver"/>
     </event>
     <event name="email_order_comment_set_template_vars_before">
-        <observer name="xqueue_maileon_order_comment_email_observer"
-                  instance="Xqueue\Maileon\Observer\OrderCommentEmailObserver"/>
+        <observer name="xqueue_maileon_order_comment_email_observer" instance="Xqueue\Maileon\Observer\OrderCommentEmailObserver"/>
     </event>
     <event name="email_creditmemo_set_template_vars_before">
-        <observer name="xqueue_maileon_credit_memo_email_observer"
-                  instance="Xqueue\Maileon\Observer\CreditMemoEmailObserver"/>
+        <observer name="xqueue_maileon_credit_memo_email_observer" instance="Xqueue\Maileon\Observer\CreditMemoEmailObserver"/>
     </event>
     <event name="email_creditmemo_comment_set_template_vars_before">
-        <observer name="xqueue_maileon_credit_memo_comment_email_observer"
-                  instance="Xqueue\Maileon\Observer\OrderEmailObserver"/>
+        <observer name="xqueue_maileon_credit_memo_comment_email_observer" instance="Xqueue\Maileon\Observer\OrderEmailObserver"/>
     </event>
     <event name="email_invoice_set_template_vars_before">
-        <observer name="xqueue_maileon_invoice_email_observer"
-                  instance="Xqueue\Maileon\Observer\InvoiceEmailObserver"/>
+        <observer name="xqueue_maileon_invoice_email_observer" instance="Xqueue\Maileon\Observer\InvoiceEmailObserver"/>
     </event>
     <event name="email_invoice_comment_set_template_vars_before">
-        <observer name="xqueue_maileon_invoice_comment_email_observer"
-                  instance="Xqueue\Maileon\Observer\InvoiceCommentEmailObserver"/>
+        <observer name="xqueue_maileon_invoice_comment_email_observer" instance="Xqueue\Maileon\Observer\InvoiceCommentEmailObserver"/>
     </event>
     <event name="email_shipment_set_template_vars_before">
-        <observer name="xqueue_maileon_shipment_email_observer"
-                  instance="Xqueue\Maileon\Observer\ShipmentEmailObserver"/>
+        <observer name="xqueue_maileon_shipment_email_observer" instance="Xqueue\Maileon\Observer\ShipmentEmailObserver"/>
     </event>
     <event name="email_shipment_comment_set_template_vars_before">
-        <observer name="xqueue_maileon_shipment_comment_email_observer"
-                  instance="Xqueue\Maileon\Observer\ShipmentCommentEmailObserver"/>
+        <observer name="xqueue_maileon_shipment_comment_email_observer" instance="Xqueue\Maileon\Observer\ShipmentCommentEmailObserver"/>
     </event>
     <event name="wishlist_add_product">
-        <observer name="xqueue_maileon_send_wishlist_event"
-                  instance="Xqueue\Maileon\Observer\WishlistAddProductObserver"/>
+        <observer name="xqueue_maileon_send_wishlist_event" instance="Xqueue\Maileon\Observer\WishlistAddProductObserver"/>
     </event>
 </config>
