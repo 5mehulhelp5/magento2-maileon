@@ -15,8 +15,12 @@
         </arguments>
     </type>
     <type name="Magento\Framework\Console\CommandListInterface">
-        <plugin name="xqueue_maileon_add_cli_commands"
-                type="Xqueue\Maileon\Plugin\Console\CommandListPlugin" />
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="commandMarkAbandonedCarts" xsi:type="object">Xqueue\Maileon\Console\Command\MarkAbandonedCartsCommand</item>
+                <item name="commandSendAbandonedCarts" xsi:type="object">Xqueue\Maileon\Console\Command\SendAbandonedCartsCommand</item>
+            </argument>
+        </arguments>
     </type>
     <type name="Magento\Framework\Mail\Template\TransportBuilder">
         <plugin name="xqueue_maileon_override_recipient"
