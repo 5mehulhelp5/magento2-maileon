@@ -7,29 +7,24 @@ use de\xqueue\maileon\api\client\contacts\ContactsService;
 use de\xqueue\maileon\api\client\contacts\Permission;
 use de\xqueue\maileon\api\client\contacts\SynchronizationMode;
 use de\xqueue\maileon\api\client\transactions\TransactionsService;
+use Exception;
 use Psr\Log\LoggerInterface;
 use Xqueue\Maileon\Helper\Config;
 
 class ImportService
 {
-    private ContactsService $contactsService;
+    private ?ContactsService $contactsService = null;
 
-    private TransactionsService $transactionsService;
+    private ?TransactionsService $transactionsService = null;
 
     public function __construct(
         protected LoggerInterface $logger,
         protected Config $config
-    ) {
-        $maileonConfig = [
-            'BASE_URI' => 'https://api.maileon.com/1.0',
-            'API_KEY' => $this->config->getApiKey(),
-            'TIMEOUT' => 30,
-        ];
+    ) {}
 
-        $this->contactsService = new ContactsService($maileonConfig);
-        $this->transactionsService = new TransactionsService($maileonConfig);
-    }
-
+    /**
+     * @throws Exception
+     */
     public function syncContacts(Contacts $contacts, bool $withoutPermission = false): bool
     {
         if ($withoutPermission) {
@@ -38,7 +33,8 @@ class ImportService
             $permission = Permission::getPermission($this->config->getNewsletterSubscriberImportPermission());
         }
 
-        $response = $this->contactsService->synchronizeContacts(
+        $contactsService = $this->getContactsService();
+        $response = $contactsService->synchronizeContacts(
             $contacts,
             $permission,
             SynchronizationMode::$UPDATE,
@@ -51,10 +47,41 @@ class ImportService
         return $response->isSuccess();
     }
 
+    /**
+     * @throws Exception
+     */
     public function sendTransactions(array $transactions): bool
     {
-        $response = $this->transactionsService->createTransactions($transactions, true, true);
+        $transactionsService = $this->getTransactionsService();
+        $response = $transactionsService->createTransactions($transactions, true, true);
 
         return $response->isSuccess();
+    }
+
+    private function getContactsService(): ContactsService
+    {
+        if ($this->contactsService === null) {
+            $this->contactsService = new ContactsService($this->getMaileonConfig());
+        }
+
+        return $this->contactsService;
+    }
+
+    private function getTransactionsService(): TransactionsService
+    {
+        if ($this->transactionsService === null) {
+            $this->transactionsService = new TransactionsService($this->getMaileonConfig());
+        }
+
+        return $this->transactionsService;
+    }
+
+    private function getMaileonConfig(): array
+    {
+        return [
+            'BASE_URI' => 'https://api.maileon.com/1.0',
+            'API_KEY'  => $this->config->getApiKey(),
+            'TIMEOUT'  => 30,
+        ];
     }
 }

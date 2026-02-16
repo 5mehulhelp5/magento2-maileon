@@ -17,6 +17,8 @@
     <type name="Magento\Framework\Console\CommandListInterface">
         <arguments>
             <argument name="commands" xsi:type="array">
+                <item name="commandImportNewsletterSubscribers" xsi:type="object">Xqueue\Maileon\Console\Command\ImportNewsletterSubscribersCommand</item>
+                <item name="commandImportOrderHistory" xsi:type="object">Xqueue\Maileon\Console\Command\ImportOrderHistoryCommand</item>
                 <item name="commandMarkAbandonedCarts" xsi:type="object">Xqueue\Maileon\Console\Command\MarkAbandonedCartsCommand</item>
                 <item name="commandSendAbandonedCarts" xsi:type="object">Xqueue\Maileon\Console\Command\SendAbandonedCartsCommand</item>
             </argument>

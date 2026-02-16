@@ -2,9 +2,10 @@
 
 namespace Xqueue\Maileon\Console\Command;
 
+use Magento\Framework\App\Area;
 use Magento\Framework\App\State;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Store\Api\StoreRepositoryInterface;
+use Magento\Store\Model\StoreManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,7 +24,7 @@ class ImportNewsletterSubscribersCommand extends Command
         private Config $config,
         private NewsletterSubscriberImporterService $newsletterSubscriberImporterService,
         private SubscriberCollectionFactory $subscriberCollectionFactory,
-        private StoreRepositoryInterface $storeRepository,
+        private StoreManagerInterface $storeManager,
         private State $appState
     ) {
         parent::__construct();
@@ -53,7 +54,7 @@ class ImportNewsletterSubscribersCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         try {
-            $this->appState->setAreaCode('adminhtml');
+            $this->appState->setAreaCode(Area::AREA_ADMINHTML);
         } catch (LocalizedException) {
             $output->writeln('Area code already set. Continue...');
         }
@@ -72,11 +73,7 @@ class ImportNewsletterSubscribersCommand extends Command
 
             foreach ($rawInputs as $value) {
                 try {
-                    if (is_numeric($value)) {
-                        $store = $this->storeRepository->getById((int)$value);
-                    } else {
-                        $store = $this->storeRepository->get($value);
-                    }
+                    $store = $this->storeManager->getStore($value);
                     $storeIds[] = $store->getId();
                 } catch (Throwable) {
                     $output->writeln("<error>Invalid store view: $value</error>");

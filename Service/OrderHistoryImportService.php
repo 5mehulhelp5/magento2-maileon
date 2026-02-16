@@ -26,7 +26,7 @@ class OrderHistoryImportService
 {
     private const BATCH_SIZE = 1000;
 
-    private TransactionService $transactionService;
+    private ?TransactionService $transactionService = null;
 
     public function __construct(
         private Config $config,
@@ -37,10 +37,7 @@ class OrderHistoryImportService
         private ImportService $importService,
         private ContactBuilder $contactBuilder,
         private LoggerInterface $logger
-    ) {
-        $apiKey = $this->config->getApiKey();
-        $this->transactionService = new TransactionService($apiKey);
-    }
+    ) {}
 
     /**
      * @throws Exception
@@ -105,7 +102,7 @@ class OrderHistoryImportService
                 ]);
             }
 
-            unset($contacts, $customerTransactions, $guestTransactions);
+            unset($contacts, $orderTransactions);
             gc_collect_cycles();
 
             $currentPage++;
@@ -144,8 +141,10 @@ class OrderHistoryImportService
      */
     protected function checkTransactionTypes(string $txName): void
     {
-        if (!$this->transactionService->existsTransactionType($txName)) {
-            $this->transactionService->setTransactionType($txName);
+        $transactionService = $this->getTransactionService();
+
+        if (! $transactionService->existsTransactionType($txName)) {
+            $transactionService->setTransactionType($txName);
         }
     }
 
@@ -190,9 +189,19 @@ class OrderHistoryImportService
         $transaction->typeName = Config::ORDER_CONFIRM_TX_NAME;
         $transaction->content = $this->orderTransactionHelper->createOrderTXContent(
             $order,
-            $this->transactionService
+            $this->getTransactionService()
         );
 
         return $transaction;
+    }
+
+    private function getTransactionService(): TransactionService
+    {
+        if ($this->transactionService === null) {
+            $apiKey = $this->config->getApiKey();
+            $this->transactionService = new TransactionService($apiKey);
+        }
+
+        return $this->transactionService;
     }
 }

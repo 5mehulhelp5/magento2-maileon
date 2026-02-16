@@ -5,9 +5,10 @@ namespace Xqueue\Maileon\Console\Command;
 use DateTime;
 use DateTimeImmutable;
 use Exception;
+use Magento\Framework\App\Area;
 use Magento\Framework\App\State;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Store\Api\StoreRepositoryInterface;
+use Magento\Store\Model\StoreManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -23,7 +24,7 @@ class ImportOrderHistoryCommand extends Command
     public function __construct(
         private Config $config,
         private OrderHistoryImportService $orderHistoryImportService,
-        private StoreRepositoryInterface $storeRepository,
+        private StoreManagerInterface $storeManager,
         private State $appState
     ) {
         parent::__construct();
@@ -66,7 +67,7 @@ class ImportOrderHistoryCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         try {
-            $this->appState->setAreaCode('adminhtml');
+            $this->appState->setAreaCode(Area::AREA_ADMINHTML);
         } catch (LocalizedException) {
             $output->writeln('Area code already set. Continue...');
         }
@@ -91,11 +92,7 @@ class ImportOrderHistoryCommand extends Command
 
             foreach ($rawInputs as $value) {
                 try {
-                    if (is_numeric($value)) {
-                        $store = $this->storeRepository->getById((int)$value);
-                    } else {
-                        $store = $this->storeRepository->get($value);
-                    }
+                    $store = $this->storeManager->getStore($value);
                     $storeIds[] = $store->getId();
                 } catch (Throwable) {
                     $output->writeln("<error>Invalid store view: $value</error>");

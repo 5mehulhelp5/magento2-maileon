@@ -1,3 +1,6 @@
+# 1.10.8
+- Improved import commands
+
 # 1.10.7
 - Fixed CLI commands registration
 
