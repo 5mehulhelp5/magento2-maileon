@@ -1,3 +1,6 @@
+# 1.10.9
+- Fixed a customer credential change notification compatibility issue
+
 # 1.10.8
 - Improved import commands
 

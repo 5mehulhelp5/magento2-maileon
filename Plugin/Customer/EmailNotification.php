@@ -31,7 +31,7 @@ class EmailNotification
         $result,
         CustomerInterface $savedCustomer,
         $origCustomerEmail,
-        $isPasswordChanged
+        $isPasswordChanged = false
     ): void {
         $this->emailContext->clear();
 
